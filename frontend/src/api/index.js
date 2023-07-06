@@ -20,6 +20,7 @@ const API = {
   },
 
   fetchJSON: async (route, body, opts = {}) => {
+    body = humps.decamelizeKeys(body);
     const response = await API.securedFetch(route, body, opts);
 
     if (response.ok) {
