@@ -1,4 +1,5 @@
 import { Route, BrowserRouter, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import AdminRoutes from "./components/AdminRoutes";
 import Envelope from "./components/Envelope";
@@ -14,6 +15,7 @@ const App = () => {
           <Route path="/admin/*" element={<AdminRoutes />} />
         </Routes>
       </BrowserRouter>
+      <ToastContainer />
     </div>
   );
 };
