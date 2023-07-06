@@ -19,7 +19,7 @@ module Api
       def create
         @guest = @wedding.guests.new(guest_params)
         if @guest.save
-          render_success("Successfully created guest", :created)
+          render json: @guest, status: :created
         else
           render_error("Could not create guests at the moment")
         end
@@ -30,7 +30,7 @@ module Api
         if @guest.update(guest_params)
           render json: @guest
         else
-          render json: @guest.errors, status: :unprocessable_entity
+          render_error("Could not create guests at the moment")
         end
       end
 
