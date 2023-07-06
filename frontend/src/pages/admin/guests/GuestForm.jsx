@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 
 const GuestForm = ({ onSubmit, guest }) => {
   const [currGuest, setCurrGuest] = useState(guest);
@@ -63,6 +63,9 @@ const GuestForm = ({ onSubmit, guest }) => {
           <option value="sapariwar">Sapariwar</option>
           <option value="nimto">Nimto</option>
         </Form.Select>
+      </Form.Group>
+      <Form.Group className="d-flex flex-row-reverse">
+        <Button type="submit">Save</Button>
       </Form.Group>
     </Form>
   );

@@ -1,10 +1,26 @@
 import { useCallback } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import { Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 import GuestForm from "./GuestForm";
 
+import { updateGuest } from "../../../api/apiCalls";
+
 const EditGuestModal = ({ show, onHide, guest }) => {
-  const editGuest = useCallback(async () => {}, []);
+  const { weddingId } = useParams();
+
+  const editGuest = useCallback(
+    async (updatedGuest) => {
+      try {
+        await updateGuest(weddingId, updatedGuest);
+        onHide();
+      } catch (errorResponse) {
+        toast.error(errorResponse.error);
+      }
+    },
+    [onHide, weddingId]
+  );
 
   return (
     <Modal show={show} onHide={onHide} size="lg">
@@ -14,12 +30,6 @@ const EditGuestModal = ({ show, onHide, guest }) => {
       <Modal.Body>
         <GuestForm onSubmit={editGuest} guest={guest} />
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
-          Cancel
-        </Button>
-        <Button onClick={editGuest}>Save</Button>
-      </Modal.Footer>
     </Modal>
   );
 };
