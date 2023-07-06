@@ -46,22 +46,31 @@ const Guests = () => {
     }
   };
 
-  const removeGuest = async (id) => {
-    const prevGuests = [...guests];
-    try {
-      await deleteGuest(weddingId, id);
-      setGuests(guests.filter((guest) => guest.id !== id));
-    } catch (errorResponse) {
-      setGuests(prevGuests);
-      toast.error(errorResponse.error);
-    }
-  };
+  const removeGuest = useCallback(
+    async (id) => {
+      console.log(id);
+
+      const prevGuests = [...guests];
+      try {
+        await deleteGuest(weddingId, guest.id);
+        setGuests(guests.filter((guest) => guest.id !== id));
+      } catch (errorResponse) {
+        setGuests(prevGuests);
+        toast.error(errorResponse.error);
+      }
+    },
+    [guest.id, guests, weddingId]
+  );
 
   const handleChange = (e) => {
     setGuest((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
+  };
+
+  const actions = {
+    removeGuest,
   };
 
   return (
@@ -125,7 +134,7 @@ const Guests = () => {
         <AgGridReact
           ref={gridApi}
           rowData={guests}
-          columnDefs={columnDefs}
+          columnDefs={columnDefs(actions)}
           domLayout="autoHeight"
           onGridReady={fetchGuests}
           onGridSizeChanged={({ api }) => api.sizeColumnsToFit()}

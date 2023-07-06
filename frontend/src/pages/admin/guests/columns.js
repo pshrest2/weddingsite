@@ -1,6 +1,6 @@
 import Actions from "./Actions";
 
-const columnDefs = [
+const columnDefs = (actions) => [
   {
     headerName: "Guest Name",
     field: "name",
@@ -32,9 +32,7 @@ const columnDefs = [
   {
     headerName: "",
     cellRenderer: Actions,
-    valueGetter: (params) => ({
-      account: params.data,
-    }),
+    valueGetter: (params) => ({ id: params.data.id, actions }),
   },
 ];
 
