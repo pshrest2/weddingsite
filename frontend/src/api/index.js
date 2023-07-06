@@ -1,5 +1,8 @@
 const API = {
   securedFetch: async (route, body, opts = {}) => {
+    const baseUrl = "http://localhost:5000";
+    const url = `${baseUrl}/api/v1/${route}`;
+
     const options = { ...opts };
 
     if (body) {
@@ -11,7 +14,7 @@ const API = {
       };
     }
 
-    return await fetch(route, options);
+    return await fetch(url, options);
   },
 
   fetchJSON: (route, body, opts = {}) =>
