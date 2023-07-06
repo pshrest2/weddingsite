@@ -24,7 +24,7 @@ const columnDefs = [
   },
   {
     headerName: "Nimto Type",
-    field: "nimto_type",
+    field: "nimtoType",
     sortable: true,
     resizable: true,
     suppressMovable: true,
