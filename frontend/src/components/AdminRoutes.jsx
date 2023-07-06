@@ -5,7 +5,7 @@ import Guests from "../admin/guests";
 const AdminRoutes = () => {
   return (
     <Routes>
-      <Route path="/guests" element={<Guests />} />
+      <Route path="/weddings/:weddingId/guests" element={<Guests />} />
     </Routes>
   );
 };
