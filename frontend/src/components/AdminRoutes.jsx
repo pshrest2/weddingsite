@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Guests from "../admin/guests";
+import Guests from "../pages/admin/guests";
 
 const AdminRoutes = () => {
   return (

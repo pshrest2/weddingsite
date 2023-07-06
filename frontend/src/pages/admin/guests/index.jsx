@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { Form, Button, Container, Table } from "react-bootstrap";
 import {
   createGuest,
   deleteGuest,
   getGuests,
   updateGuest,
-} from "../../api/apiCalls";
+} from "../../../api/apiCalls";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -36,9 +37,7 @@ const Guests = () => {
     const prevGuests = [...guests];
 
     try {
-      await createGuest(weddingId, {
-        body: JSON.stringify(guest),
-      });
+      await createGuest(weddingId, guest);
       setGuests([...guests, guest]);
     } catch (errorResponse) {
       setGuests(prevGuests);
@@ -69,35 +68,63 @@ const Guests = () => {
   }, [fetchGuests]);
 
   return (
-    <div>
+    <Container>
       <h2>Atithi</h2>
-      <form onSubmit={submitForm}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Enter guest's name"
-          value={guest.name}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Enter guest's email"
-          name="email"
-          value={guest.email}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          placeholder="Enter guest's phone"
-          name="phone"
-          value={guest.phone}
-          onChange={handleChange}
-        />
-        <button type="submit">Add Guest</button>
-      </form>
+      <Form onSubmit={submitForm}>
+        <Form.Group className="mb-3">
+          <Form.Label>Guest/Family Name</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter guest's name"
+            name="name"
+            value={guest.name}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
 
-      <table>
+        <Form.Group className="mb-3">
+          <Form.Label>Phone Number</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter guest's phone number"
+            name="phone"
+            value={guest.phone}
+            onChange={handleChange}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Email Address</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="example@gmail.com"
+            name="email"
+            value={guest.email}
+            onChange={handleChange}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Nimto Type</Form.Label>
+          <Form.Select
+            name="nimtoType"
+            value={guest.nimtoType}
+            onChange={handleChange}
+          >
+            <option>Select a nimto type</option>
+            <option value="chuley_nimto">Chuley Nimto</option>
+            <option value="sapariwar">Sapariwar</option>
+            <option value="nimto">Nimto</option>
+          </Form.Select>
+        </Form.Group>
+
+        <Button variant="primary" type="submit">
+          Add Guest
+        </Button>
+      </Form>
+
+      <Table responsive hover>
         <thead>
           <tr>
             <th>Name</th>
@@ -117,8 +144,8 @@ const Guests = () => {
             </tr>
           ))}
         </tbody>
-      </table>
-    </div>
+      </Table>
+    </Container>
   );
 };
 export default Guests;
