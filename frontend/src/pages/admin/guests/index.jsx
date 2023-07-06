@@ -1,16 +1,12 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useCallback, useRef } from "react";
 import { Form, Button, Container } from "react-bootstrap";
-import { AgGridReact } from "ag-grid-react";
-
-import {
-  createGuest,
-  deleteGuest,
-  getGuests,
-  updateGuest,
-} from "../../../api/apiCalls";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { AgGridReact } from "ag-grid-react";
+
 import columnDefs from "./columns";
+
+import { createGuest, deleteGuest, getGuests } from "../../../api/apiCalls";
 
 const initialValue = {
   name: "",
