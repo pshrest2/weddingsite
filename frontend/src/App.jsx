@@ -1,34 +1,19 @@
-import React, { useState } from "react";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
 
-import envelopeImage from "./envelope.png";
-import cardImage from "./invitation-card.png";
+import AdminRoutes from "./components/AdminRoutes";
+import Envelope from "./components/Envelope";
 
 import "./App.scss";
 
 const App = () => {
-  const [isEnvelopeOpen, setEnvelopeOpen] = useState(false);
-
   return (
     <div className="app">
-      <div className="d-flex align-items-center mt-5">
-        {isEnvelopeOpen ? (
-          <img
-            className="mx-auto"
-            src={cardImage}
-            alt="Invitation Card"
-            width={500}
-            onClick={() => setEnvelopeOpen(false)}
-          />
-        ) : (
-          <img
-            className="mx-auto"
-            src={envelopeImage}
-            alt="Envelope"
-            width={500}
-            onClick={() => setEnvelopeOpen(true)}
-          />
-        )}
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" exact element={<Envelope />} />
+          <Route path="/admin/*" element={<AdminRoutes />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 };
