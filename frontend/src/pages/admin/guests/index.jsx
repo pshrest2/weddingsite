@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Form, Button, Container, Table } from "react-bootstrap";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { Form, Button, Container } from "react-bootstrap";
+import { AgGridReact } from "ag-grid-react";
+
 import {
   createGuest,
   deleteGuest,
@@ -8,6 +10,7 @@ import {
 } from "../../../api/apiCalls";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import columnDefs from "./columns";
 
 const initialValue = {
   name: "",
@@ -18,11 +21,13 @@ const initialValue = {
 };
 
 const Guests = () => {
+  const gridApi = useRef();
   const { weddingId } = useParams();
   const [guests, setGuests] = useState([]);
   const [guest, setGuest] = useState(initialValue);
 
   const fetchGuests = useCallback(async () => {
+    gridApi.current.api.showLoadingOverlay();
     try {
       const result = await getGuests(weddingId);
       setGuests(result);
@@ -32,7 +37,7 @@ const Guests = () => {
     }
   }, [weddingId]);
 
-  const submitForm = async (e) => {
+  const addGuest = async (e) => {
     e.preventDefault();
     const prevGuests = [...guests];
 
@@ -63,14 +68,10 @@ const Guests = () => {
     }));
   };
 
-  useEffect(() => {
-    fetchGuests();
-  }, [fetchGuests]);
-
   return (
     <Container>
       <h2>Atithi</h2>
-      <Form onSubmit={submitForm}>
+      <Form onSubmit={addGuest}>
         <Form.Group className="mb-3">
           <Form.Label>Guest/Family Name</Form.Label>
           <Form.Control
@@ -124,27 +125,18 @@ const Guests = () => {
         </Button>
       </Form>
 
-      <Table responsive hover>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {guests.map((guest) => (
-            <tr key={guest.id}>
-              <td>{guest.name}</td>
-              <td>{guest.email}</td>
-              <td>
-                <button onClick={() => updateGuest(guest.id)}>Edit</button>
-                <button onClick={() => removeGuest(guest.id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <div className="ag-theme-alpine my-3">
+        <AgGridReact
+          ref={gridApi}
+          rowData={guests}
+          columnDefs={columnDefs}
+          domLayout="autoHeight"
+          onGridReady={fetchGuests}
+          onGridSizeChanged={({ api }) => api.sizeColumnsToFit()}
+          suppressRowClickSelection
+          suppressRowHoverHighlight
+        />
+      </div>
     </Container>
   );
 };
