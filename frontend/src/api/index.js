@@ -1,3 +1,5 @@
+import humps from "humps";
+
 const API = {
   securedFetch: async (route, body, opts = {}) => {
     const baseUrl = "http://localhost:5000";
@@ -17,34 +19,34 @@ const API = {
     return await fetch(url, options);
   },
 
-  fetchJSON: (route, body, opts = {}) =>
-    API.securedFetch(route, body, opts).then((response) => {
-      if (response.ok) {
-        if (response.headers.get("content-type").match(/application\/json/i)) {
-          return response.json();
-        }
-        return new Promise((resolve, reject) => reject(response));
+  fetchJSON: async (route, body, opts = {}) => {
+    const response = await API.securedFetch(route, body, opts);
+
+    if (response.ok) {
+      if (response.headers.get("content-type").match(/application\/json/i)) {
+        const result = await response.json();
+        return humps.camelizeKeys(result);
       }
-      if (response.status >= 400) {
-        return new Promise((resolve, reject) => {
-          response
-            .json()
-            .then((json) => {
-              reject(json);
-            })
-            .catch(() => {
-              reject({
-                error: {
-                  type: "FetchParseError",
-                  message:
-                    "A 422 error was thrown, but the response could not be parsed as JSON",
-                },
-              });
-            });
+      throw new Error(response);
+    }
+
+    if (response.status >= 400) {
+      try {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse);
+      } catch {
+        throw new Error({
+          error: {
+            type: "FetchParseError",
+            message:
+              "A 422 error was thrown, but the response could not be parsed as JSON",
+          },
         });
       }
-      return new Promise((resolve, reject) => reject(response));
-    }),
+    }
+
+    throw new Error(response);
+  },
 };
 
 export default API;
