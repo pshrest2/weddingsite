@@ -15,10 +15,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_05_231020) do
   enable_extension "plpgsql"
 
   create_table "guests", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.string "email"
-    t.string "phone"
-    t.string "nimto_type"
+    t.string "phone", null: false
+    t.string "nimto_type", null: false
     t.string "additional_info"
     t.bigint "wedding_id", null: false
     t.datetime "created_at", null: false
