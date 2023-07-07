@@ -18,8 +18,10 @@ module Api
       # POST /weddings/:wedding_id/guests
       def create
         @guest = @wedding.guests.new(guest_params)
+        @guest.passcode = generate_unique_code_for_wedding
+
         if @guest.save
-          render_success("Successfully created guest", :created)
+          render json: @guest, status: :created
         else
           render_error("Could not create guests at the moment")
         end
@@ -30,7 +32,7 @@ module Api
         if @guest.update(guest_params)
           render json: @guest
         else
-          render_error("Could not create guests at the moment")
+          render_error("Could not update guests at the moment")
         end
       end
 
@@ -51,7 +53,14 @@ module Api
       end
 
       def guest_params
-        params.require(:guest).permit(:name, :email, :phone, :nimto_type, :rsvp, :additional_info)
+        params.require(:guest).permit(:name, :email, :phone, :nimto_type, :additional_info)
+      end
+
+      def generate_unique_code_for_wedding
+        loop do
+          passcode = SecureRandom.random_number(10_000)
+          return passcode.to_s.rjust(4, '0') unless Guest.exists?(passcode: passcode, wedding: @wedding)
+        end
       end
     end
   end

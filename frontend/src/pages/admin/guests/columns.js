@@ -2,20 +2,20 @@ import Actions from "./Actions";
 
 const columnDefs = (actions) => [
   {
-    headerName: "Guest Name",
     field: "name",
   },
   {
-    headerName: "Phone",
     field: "phone",
   },
   {
-    headerName: "Email",
     field: "email",
   },
   {
     headerName: "Nimto Type",
     field: "nimtoType",
+  },
+  {
+    field: "passcode",
   },
   {
     headerName: "",

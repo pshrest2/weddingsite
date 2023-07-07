@@ -19,6 +19,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_05_231020) do
     t.string "email"
     t.string "phone", null: false
     t.string "nimto_type", null: false
+    t.string "passcode", null: false
     t.string "additional_info"
     t.bigint "wedding_id", null: false
     t.datetime "created_at", null: false

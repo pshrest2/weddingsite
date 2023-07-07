@@ -15,6 +15,7 @@ const initialValue = {
   phone: "",
   nimtoType: "",
   additionalInfo: "",
+  passcode: "",
 };
 
 const defaultColDef = {
@@ -40,13 +41,10 @@ const Guests = () => {
   }, [weddingId]);
 
   const addGuest = async (guest) => {
-    const prevGuests = [...guests];
-
     try {
-      await createGuest(weddingId, guest);
-      setGuests([...guests, guest]);
+      const newGuest = await createGuest(weddingId, guest);
+      setGuests([...guests, newGuest]);
     } catch (errorResponse) {
-      setGuests(prevGuests);
       toast.error(errorResponse.error);
     }
   };
