@@ -15,6 +15,17 @@ module Api
         render json: @guest
       end
 
+      # GET /weddings/:wedding_id/guests/:passcode
+      def show_by_passcode
+        @guest = @wedding.guests.find_by(passcode: params[:passcode])
+
+        if @guest
+          render json: @guest, status: :ok
+        else
+          render_error("Guest not found with the provided passcode for this wedding", :not_found)
+        end
+      end
+
       # POST /weddings/:wedding_id/guests
       def create
         @guest = @wedding.guests.new(guest_params)

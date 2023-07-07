@@ -34,9 +34,9 @@ const Guests = () => {
     try {
       const result = await getGuests(weddingId);
       setGuests(result);
-    } catch (errorResponse) {
+    } catch (error) {
       setGuests([]);
-      toast.error(errorResponse.error);
+      toast.error(error);
     }
   }, [weddingId]);
 
@@ -44,8 +44,8 @@ const Guests = () => {
     try {
       const newGuest = await createGuest(weddingId, guest);
       setGuests([...guests, newGuest]);
-    } catch (errorResponse) {
-      toast.error(errorResponse.error);
+    } catch (error) {
+      toast.error(error);
     }
   };
 
@@ -55,9 +55,9 @@ const Guests = () => {
       try {
         await deleteGuest(weddingId, id);
         setGuests(guests.filter((guest) => guest.id !== id));
-      } catch (errorResponse) {
+      } catch (error) {
         setGuests(prevGuests);
-        toast.error(errorResponse.error);
+        toast.error(error);
       }
     },
     [guests, weddingId]

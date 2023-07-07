@@ -15,8 +15,8 @@ const EditGuestModal = ({ show, onHide, guest }) => {
       try {
         await updateGuest(weddingId, updatedGuest);
         onHide();
-      } catch (errorResponse) {
-        toast.error(errorResponse.error);
+      } catch (error) {
+        toast.error(error);
       }
     },
     [onHide, weddingId]

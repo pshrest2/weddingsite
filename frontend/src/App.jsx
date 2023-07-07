@@ -3,6 +3,7 @@ import { ToastContainer } from "react-toastify";
 
 import AdminRoutes from "./components/AdminRoutes";
 import Envelope from "./components/Envelope";
+import { SayaraAndBishwas } from "./pages/weddings";
 
 import "./App.scss";
 
@@ -13,6 +14,7 @@ const App = () => {
         <Routes>
           <Route path="/" exact element={<Envelope />} />
           <Route path="/admin/*" element={<AdminRoutes />} />
+          <Route path="/sayara-and-bishwas" element={<SayaraAndBishwas />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer />

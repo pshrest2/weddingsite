@@ -28,6 +28,11 @@ export function getGuests(wedding_id) {
 export function getGuest(wedding_id, id) {
   return API.fetchJSON(`weddings/${wedding_id}/guests/${id}`);
 }
+export function getGuestByPasscode(wedding_id, passcode) {
+  return API.fetchJSON(
+    `weddings/${wedding_id}/guests/show_by_passcode/${passcode}`
+  );
+}
 export function createGuest(wedding_id, body) {
   return API.fetchJSON(`weddings/${wedding_id}/guests`, body);
 }
