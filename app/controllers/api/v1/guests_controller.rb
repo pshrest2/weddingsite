@@ -70,7 +70,7 @@ module Api
       def generate_unique_code_for_wedding
         loop do
           passcode = SecureRandom.random_number(10_000)
-          return passcode.to_s.rjust(4, '0') unless Guest.exists?(passcode: passcode, wedding: @wedding)
+          return passcode.to_s.rjust(4, "0") unless Guest.exists?(passcode:, wedding: @wedding)
         end
       end
     end

@@ -29,7 +29,7 @@ const GuestForm = ({ onSubmit, guest }) => {
         />
       </Form.Group>
 
-      <Form.Group className="mb-3">
+      {/* <Form.Group className="mb-3">
         <Form.Label>Phone Number</Form.Label>
         <Form.Control
           type="text"
@@ -49,7 +49,7 @@ const GuestForm = ({ onSubmit, guest }) => {
           value={currGuest.email}
           onChange={handleChange}
         />
-      </Form.Group>
+      </Form.Group> */}
 
       <Form.Group className="mb-3">
         <Form.Label>Nimto Type</Form.Label>

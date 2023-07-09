@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import { faFileEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EditGuestModal from "./EditGuestModal";
 import { useState } from "react";
@@ -10,12 +10,13 @@ const Actions = ({ value: { guest, actions } }) => {
   return (
     <>
       <Button
+        className="text-secondary"
         variant="link"
         onClick={() => {
           setShowEditGuest(true);
         }}
       >
-        <FontAwesomeIcon icon={faFileEdit} />
+        <FontAwesomeIcon icon={faEdit} />
       </Button>
       <Button
         className="text-danger"

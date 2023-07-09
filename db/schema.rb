@@ -17,7 +17,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_05_231020) do
   create_table "guests", force: :cascade do |t|
     t.string "name", null: false
     t.string "email"
-    t.string "phone", null: false
+    t.string "phone"
     t.string "nimto_type", null: false
     t.string "passcode", null: false
     t.string "additional_info"

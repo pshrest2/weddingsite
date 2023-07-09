@@ -1,22 +1,15 @@
 import Actions from "./Actions";
+import NimtoType from "./NimtoType";
 
 const columnDefs = (actions) => [
-  {
-    field: "name",
-  },
-  {
-    field: "phone",
-  },
-  {
-    field: "email",
-  },
+  { field: "name" },
   {
     headerName: "Nimto Type",
-    field: "nimtoType",
+    valueGetter: (params) => ({ nimtoType: params.data.nimtoType }),
+    cellRenderer: NimtoType,
   },
-  {
-    field: "passcode",
-  },
+  { field: "passcode" },
+  { headerName: "Additional Info", field: "additional_info" },
   {
     headerName: "",
     cellRenderer: Actions,
