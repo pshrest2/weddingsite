@@ -9,7 +9,7 @@ const columnDefs = (actions) => [
     cellRenderer: NimtoType,
   },
   { field: "passcode" },
-  { headerName: "Additional Info", field: "additional_info" },
+  { headerName: "Additional Info", field: "additionalInfo" },
   {
     headerName: "",
     cellRenderer: Actions,

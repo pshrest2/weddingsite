@@ -30,6 +30,7 @@ const Actions = ({ value: { guest, actions } }) => {
         show={showEditGuest}
         onHide={() => setShowEditGuest(false)}
         guest={guest}
+        onSubmit={actions.editGuest}
       />
     </>
   );

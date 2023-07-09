@@ -6,7 +6,12 @@ import { AgGridReact } from "ag-grid-react";
 
 import columnDefs from "./columns";
 
-import { createGuest, deleteGuest, getGuests } from "../../../api/apiCalls";
+import {
+  createGuest,
+  deleteGuest,
+  getGuests,
+  updateGuest,
+} from "../../../api/apiCalls";
 import GuestForm from "./GuestForm";
 
 const initialValue = {
@@ -40,14 +45,35 @@ const Guests = () => {
     }
   }, [weddingId]);
 
-  const addGuest = async (guest) => {
-    try {
-      const newGuest = await createGuest(weddingId, guest);
-      setGuests([...guests, newGuest]);
-    } catch (error) {
-      toast.error(error);
-    }
-  };
+  const addGuest = useCallback(
+    async (guest) => {
+      try {
+        const newGuest = await createGuest(weddingId, guest);
+        setGuests([...guests, newGuest]);
+      } catch (error) {
+        toast.error(error);
+      }
+    },
+    [guests, weddingId]
+  );
+
+  const editGuest = useCallback(
+    async (guest) => {
+      try {
+        const updatedGuest = await updateGuest(weddingId, guest.id, guest);
+        setGuests((prev) => {
+          const newGuests = [...prev];
+          const index = guests.findIndex((g) => g.id === guest.id);
+
+          newGuests[index] = updatedGuest;
+          return newGuests;
+        });
+      } catch (error) {
+        toast.error(error);
+      }
+    },
+    [guests, weddingId]
+  );
 
   const removeGuest = useCallback(
     async (id) => {
@@ -65,6 +91,7 @@ const Guests = () => {
 
   const actions = {
     removeGuest,
+    editGuest,
   };
 
   return (

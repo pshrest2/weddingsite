@@ -57,12 +57,24 @@ const GuestForm = ({ onSubmit, guest }) => {
           name="nimtoType"
           value={currGuest.nimtoType}
           onChange={handleChange}
+          required
         >
           <option>Select a nimto type</option>
           <option value="chuley_nimto">Chuley Nimto</option>
           <option value="sapariwar">Sapariwar</option>
           <option value="nimto">Nimto</option>
         </Form.Select>
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>Additional Info</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter any additional info here"
+          name="additionalInfo"
+          value={currGuest.additionalInfo}
+          onChange={handleChange}
+        />
       </Form.Group>
       <Form.Group className="d-flex flex-row-reverse">
         <Button type="submit">Save</Button>
