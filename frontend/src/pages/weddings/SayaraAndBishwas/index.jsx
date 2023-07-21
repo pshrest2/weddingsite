@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import { Col, Image, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 
@@ -7,6 +7,7 @@ import PasscodeModal from "./PasscodeModal";
 import { getGuestByPasscode } from "../../../api/apiCalls";
 
 import landingPage from "../../../images/landing-page.png";
+import usePasscode from "../../../hooks/usePasscode";
 
 // Need a better way to do this
 const WEDDING_ID = 1;
@@ -17,50 +18,42 @@ const guestInitialValue = {
 };
 
 const SayaraAndBishwas = () => {
-  const [requirePasscode, setRequirePasscode] = useState(true);
   const [guest, setGuest] = useState(guestInitialValue);
+  const { passcode, setPasscode } = usePasscode();
 
-  const showGuest = useMemo(
-    () => guest.name && guest.nimtoType,
-    [guest.name, guest.nimtoType]
+  const loadGuest = useCallback(
+    async (code) => {
+      setPasscode(code);
+      try {
+        const { name, nimtoType } = await getGuestByPasscode(WEDDING_ID, code);
+        setGuest({ name, nimtoType });
+      } catch (error) {
+        toast.error(error);
+        setGuest(guestInitialValue);
+        setPasscode(null);
+      }
+    },
+    [setPasscode]
   );
 
-  const loadGuest = useCallback(async (passcode) => {
-    try {
-      const { name, nimtoType } = await getGuestByPasscode(
-        WEDDING_ID,
-        passcode
-      );
-      setGuest({ name, nimtoType });
-      setRequirePasscode(false);
-    } catch (error) {
-      toast.error(error);
-      setGuest(guestInitialValue);
-      setRequirePasscode(true);
-    }
-  }, []);
-
-  if (requirePasscode)
-    return <PasscodeModal show={requirePasscode} onSubmit={loadGuest} />;
+  if (!passcode) return <PasscodeModal show={!passcode} onSubmit={loadGuest} />;
 
   return (
     <div>
-      {showGuest && (
-        <div>
-          <Row>
-            <Col></Col>
-          </Row>
-          <Row>
-            <Col>
-              <Image src={landingPage} fluid />
-            </Col>
-            <h4>
-              Hello {guest.name}, you are intivited to this wedding as{" "}
-              {guest.nimtoType}
-            </h4>
-          </Row>
-        </div>
-      )}
+      <div>
+        <Row>
+          <Col></Col>
+        </Row>
+        <Row>
+          <Col>
+            <Image src={landingPage} fluid />
+          </Col>
+          <h4>
+            Hello {guest.name}, you are intivited to this wedding as{" "}
+            {guest.nimtoType}
+          </h4>
+        </Row>
+      </div>
     </div>
   );
 };
