@@ -12,9 +12,9 @@ const App = () => {
     <div className="app">
       <BrowserRouter>
         <Routes>
-          <Route path="/" exact element={<Envelope />} />
-          <Route path="/admin/*" element={<AdminRoutes />} />
-          <Route path="/sayara-and-bishwas" element={<SayaraAndBishwas />} />
+          <Route path="" exact element={<Envelope />} />
+          <Route path="admin/*" element={<AdminRoutes />} />
+          <Route path="sayara-and-bishwas" element={<SayaraAndBishwas />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer />

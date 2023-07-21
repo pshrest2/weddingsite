@@ -1,10 +1,12 @@
 import { useCallback, useMemo, useState } from "react";
-import { Container } from "react-bootstrap";
+import { Col, Image, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 import PasscodeModal from "./PasscodeModal";
 
 import { getGuestByPasscode } from "../../../api/apiCalls";
+
+import landingPage from "../../../images/landing-page.png";
 
 // Need a better way to do this
 const WEDDING_ID = 1;
@@ -42,14 +44,24 @@ const SayaraAndBishwas = () => {
     return <PasscodeModal show={requirePasscode} onSubmit={loadGuest} />;
 
   return (
-    <Container>
+    <div>
       {showGuest && (
-        <h4>
-          Hello {guest.name}, you are intivited to this wedding as{" "}
-          {guest.nimtoType}
-        </h4>
+        <div>
+          <Row>
+            <Col></Col>
+          </Row>
+          <Row>
+            <Col>
+              <Image src={landingPage} fluid />
+            </Col>
+            <h4>
+              Hello {guest.name}, you are intivited to this wedding as{" "}
+              {guest.nimtoType}
+            </h4>
+          </Row>
+        </div>
       )}
-    </Container>
+    </div>
   );
 };
 
