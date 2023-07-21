@@ -1,10 +1,12 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import { Container } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { useSpring, animated } from "@react-spring/web";
 
 import PasscodeModal from "./PasscodeModal";
 
 import { getGuestByPasscode } from "../../../api/apiCalls";
+import usePasscode from "../../../hooks/usePasscode";
 
 // Need a better way to do this
 const WEDDING_ID = 1;
@@ -14,41 +16,63 @@ const guestInitialValue = {
   nimtoType: "",
 };
 
+const AnimatedComponent = () => {
+  const [springs, api] = useSpring(() => ({
+    from: { x: 0 },
+  }));
+
+  const handleClick = () => {
+    api.start({
+      from: {
+        x: 0,
+      },
+      to: {
+        x: 100,
+      },
+    });
+  };
+  return (
+    <animated.div
+      onClick={handleClick}
+      style={{
+        width: 80,
+        height: 80,
+        background: "#ff6d6d",
+        borderRadius: 8,
+        ...springs,
+      }}
+    />
+  );
+};
+
 const SayaraAndBishwas = () => {
-  const [requirePasscode, setRequirePasscode] = useState(true);
+  const { passcode, setPasscode } = usePasscode();
   const [guest, setGuest] = useState(guestInitialValue);
 
-  const showGuest = useMemo(
-    () => guest.name && guest.nimtoType,
-    [guest.name, guest.nimtoType]
+  const loadGuest = useCallback(
+    async (code) => {
+      setPasscode(code);
+      try {
+        const { name, nimtoType } = await getGuestByPasscode(WEDDING_ID, code);
+        setGuest({ name, nimtoType });
+      } catch (error) {
+        toast.error(error);
+        setGuest(guestInitialValue);
+        setPasscode(null);
+      }
+    },
+    [setPasscode]
   );
 
-  const loadGuest = useCallback(async (passcode) => {
-    try {
-      const { name, nimtoType } = await getGuestByPasscode(
-        WEDDING_ID,
-        passcode
-      );
-      setGuest({ name, nimtoType });
-      setRequirePasscode(false);
-    } catch (error) {
-      toast.error(error);
-      setGuest(guestInitialValue);
-      setRequirePasscode(true);
-    }
-  }, []);
-
-  if (requirePasscode)
-    return <PasscodeModal show={requirePasscode} onSubmit={loadGuest} />;
+  if (!passcode) return <PasscodeModal show={!passcode} onSubmit={loadGuest} />;
 
   return (
     <Container>
-      {showGuest && (
-        <h4>
-          Hello {guest.name}, you are intivited to this wedding as{" "}
-          {guest.nimtoType}
-        </h4>
-      )}
+      <div>
+        Hello {guest.name}, you are intivited to this wedding as{" "}
+        {guest.nimtoType}
+        <AnimatedComponent />
+      </div>
     </Container>
   );
 };
